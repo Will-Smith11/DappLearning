@@ -18,7 +18,7 @@ contract DappTest is DSTest {
         uint prebal = payable(address(this)).balance;
         dapp.sendFundsToAddress(address(this), 30);
         uint postbal = payable(address(this)).balance;
-        assertEq(prebal+30, postbal);                
+        assertEq(prebal + 30, postbal);                
     }
 
     receive() external payable{}

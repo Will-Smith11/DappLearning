@@ -7,7 +7,6 @@ contract Dapp
     string ContractPassword;
     address owner;
     
-    event Received(address, uint);
     event SentFunds(address, uint);
     constructor()
     {
@@ -19,10 +18,7 @@ contract Dapp
         require(owner == msg.sender);
         _;
     }
-
-     receive() external payable {
-        emit Received(msg.sender, msg.value);
-    }
+    receive() external payable{}
 
     function getBalance() external view returns (uint)
     {
