@@ -21,6 +21,8 @@ contract DappTest is DSTest {
         assertEq(prebal+30, postbal);                
     }
 
+    receive() external payable{}
+
     function test_getBalance() public
     {
         assertEq(payable(address(dapp)).balance, dapp.getBalance());
