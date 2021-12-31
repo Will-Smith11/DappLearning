@@ -12,11 +12,12 @@ contract DappTest is DSTest {
         dapp = new Dapp();
     }
 
-    function testFail_basic_sanity() public {
-        assertTrue(false);
-    }
-
-    function test_basic_sanity() public {
-        assertTrue(true);
+    function prove_sendEthToAddr(address testAddress) public 
+    {
+        payable(address(dapp)).transfer(69 ether);
+        uint prebal = payable(testAddress).balance;
+        dapp.sendFundsToAddress(testAddress, 30);
+        uint postbal = payable(testAddress).balance;
+        AssertEq(prebal+30, postbal);                
     }
 }

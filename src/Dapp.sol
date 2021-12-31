@@ -7,9 +7,12 @@ contract Dapp
     string ContractPassword;
     address owner;
     
+    event Received(address, uint);
+
     constructor()
     {
         owner = msg.sender;
+        
     }
     
     modifier isOwner()
@@ -18,11 +21,18 @@ contract Dapp
         _;
     }
 
+     receive() external payable {
+        emit Received(msg.sender, msg.value);
+    }
+
     function getBalance() external view returns (uint)
     {
         return address(this).balance;
     }
 
-
-
+    function sendFundsToAddress(address _address, uint amount) external payable isOwner
+    {
+        require(address(this).balance >= amount); 
+        payable(address(_address)).transfer(amount); 
+    }
 }
