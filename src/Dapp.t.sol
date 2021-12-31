@@ -10,14 +10,19 @@ contract DappTest is DSTest {
 
     function setUp() public {
         dapp = new Dapp();
+        payable(address(dapp)).transfer(69 ether);
     }
 
-    function prove_sendEthToAddr(address testAddress) public 
+    function test_sendFundsToAddress() public 
     {
-        payable(address(dapp)).transfer(69 ether);
-        uint prebal = payable(testAddress).balance;
-        dapp.sendFundsToAddress(testAddress, 30);
-        uint postbal = payable(testAddress).balance;
-        AssertEq(prebal+30, postbal);                
+        uint prebal = payable(address(this)).balance;
+        dapp.sendFundsToAddress(address(this), 30);
+        uint postbal = payable(address(this)).balance;
+        assertEq(prebal+30, postbal);                
+    }
+
+    function test_getBalance() public
+    {
+        assertEq(payable(address(dapp)).balance, dapp.getBalance());
     }
 }

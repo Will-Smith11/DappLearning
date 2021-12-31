@@ -8,11 +8,10 @@ contract Dapp
     address owner;
     
     event Received(address, uint);
-
+    event SentFunds(address, uint);
     constructor()
     {
         owner = msg.sender;
-        
     }
     
     modifier isOwner()
@@ -34,5 +33,6 @@ contract Dapp
     {
         require(address(this).balance >= amount); 
         payable(address(_address)).transfer(amount); 
+        emit SentFunds(_address, amount);
     }
 }
