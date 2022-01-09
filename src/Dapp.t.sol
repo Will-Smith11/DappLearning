@@ -8,6 +8,8 @@ import "./Dapp.sol";
 contract DappTest is DSTest {
     Dapp dapp;
 
+    receive() external payable{}
+    
     function setUp() public {
         dapp = new Dapp();
         payable(address(dapp)).transfer(69 ether);
@@ -20,9 +22,7 @@ contract DappTest is DSTest {
         uint postbal = payable(address(this)).balance;
         assertEq(prebal + 30, postbal);                
     }
-
-    receive() external payable{}
-
+    
     function test_getBalance() public
     {
         assertEq(payable(address(dapp)).balance, dapp.getBalance());
