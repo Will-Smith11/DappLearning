@@ -5,9 +5,11 @@ import "./Election.sol";
 
 contract ElectionFactory
 {
-
-    function createElection(uint _duration) public returns(Election)
+    function createElection(uint _duration, string calldata _name) public returns(Election)
     {
-        
+        return new Election(Election.ElectionInfo({
+            election_identifier: _name,
+            duration: block.timestamp + _duration
+        }));
     }
 }
