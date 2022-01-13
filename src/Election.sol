@@ -14,6 +14,7 @@ contract Election
     event NewCanidate(address _canidate, string _name);
 
     mapping(address => bool) public hasVoted;
+    mapping(address => uint) private getCanidateIndex;
 
     struct ElectionInfo
     {
@@ -27,8 +28,7 @@ contract Election
         address canidate_address;
     }
 
-
-    modifier isCompleted()
+    modifier isNotCompleted()
     {
         require(block.timestamp < duration);
         _;
@@ -47,7 +47,7 @@ contract Election
         emit NewElection(_eInfo.election_identifier,  _eInfo.duration);
     }
 
-    function registerAsCanidate(string calldata _name) public
+    function registerAsCanidate(string calldata _name) public isNotCompleted()
     {
         canidate_count++;
         canidates[canidate_count] = (Canidate({
@@ -55,13 +55,16 @@ contract Election
             vote_count: 0,
             canidate_address: msg.sender
         }));
+        getCanidateIndex[msg.sender] = canidate_count;
 
         emit NewCanidate(msg.sender, _name);
     }
 
-    function voteForCanidate(address _canidateAddr) public canVote()
+    function voteForCanidate(address _canidateAddr) public canVote() isNotCompleted()
     {
-        
+        Canidate storage canidate = canidates[getCanidateIndex[_canidateAddr]];
+        canidate.vote_count++;
+        emit NewVote(_canidateAddr, msg.sender);
     }
 
     function getAllCanidates() public view returns(Canidate[] memory)
