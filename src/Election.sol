@@ -49,14 +49,14 @@ contract Election
 
     function registerAsCanidate(string calldata _name) public isNotCompleted()
     {
-        canidate_count++;
-        canidates[canidate_count] = (Canidate({
+        canidates.push(Canidate({
             name: _name,
             vote_count: 0,
             canidate_address: msg.sender
         }));
         getCanidateIndex[msg.sender] = canidate_count;
 
+        canidate_count++;
         emit NewCanidate(msg.sender, _name);
     }
 
